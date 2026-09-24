@@ -1,14 +1,15 @@
 import { useState } from "react"
+import { useNavigate, useOutletContext, useParams } from "react-router-dom"
 import { v4 as uuidv4 } from 'uuid'
 
 function BookForm() {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [pages, setPages] = useState("")
-
-  const bookstores = []
-  const id = null
+  const {id} = useParams()
+  const { bookstores, updateBookstore } = useOutletContext()
   const bookstore = bookstores.find(store => store.id === id)
+  const navigate = useNavigate()
   
   if (!bookstore) { return <h2>Bookstore not found.</h2>}
 
@@ -34,7 +35,8 @@ function BookForm() {
         return r.json()
     })
     .then(updatedBookstore => {
-        console.log(updatedBookstore)
+        updateBookstore(updatedBookstore)
+        navigate(`/bookstores${id}/books${newBook.id}`)
     })
     .catch(console.log)
   }

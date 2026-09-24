@@ -1,7 +1,8 @@
-function BookstoreCard() {
-    const bookstores = null
-    const id = null
+import { Link, Outlet, useOutletContext, useParams } from "react-router-dom"
 
+function BookstoreCard() {
+    const { bookstores, updateBookstore } = useOutletContext()
+    const { id } = useParams()
     const bookstore = bookstores.find(b => b.id === id)
   
     if (!bookstore) return <h2>Bookstore not found.</h2>
@@ -14,14 +15,14 @@ function BookstoreCard() {
         <ul>
           {bookstore.books.map(book => (
             <li key={book.id}>
-              <a>{book.title}</a>
+              <Link to= {`books/${book.id}`}>{book.title} </Link>
             </li>
           ))}
         </ul>
-        <a>Add New Book</a>
+        <Link to="books/new">Add New Book</Link>
+        <Outlet context={{bookstores, updateBookstore}}/>
       </div>
     )
 }
 
 export default BookstoreCard
-  
